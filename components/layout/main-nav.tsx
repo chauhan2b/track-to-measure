@@ -125,9 +125,6 @@ export default function MainNav() {
                   <Link href={route.path}>{route.name}</Link>
                 </DropdownMenuItem>
               ))}
-              <DropdownMenuItem className="md:hidden focus:bg-transparent hover:bg-transparent cursor-default">
-                <ThemeToggle />
-              </DropdownMenuItem>
               {session ? (
                 <>
                   <DropdownMenuItem asChild>

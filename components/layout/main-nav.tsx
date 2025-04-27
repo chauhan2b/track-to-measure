@@ -14,6 +14,7 @@ import {
   Avatar,
   AvatarFallback,
 } from "@/components/ui/avatar";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 export default function MainNav() {
   const pathname = usePathname();
@@ -58,6 +59,8 @@ export default function MainNav() {
           </nav>
         </div>
         <div className="flex items-center gap-4">
+          <ThemeToggle />
+          
           {session ? (
             <div className="hidden md:flex items-center gap-4">
               <span className="text-sm text-muted-foreground">
@@ -122,6 +125,9 @@ export default function MainNav() {
                   <Link href={route.path}>{route.name}</Link>
                 </DropdownMenuItem>
               ))}
+              <DropdownMenuItem className="md:hidden focus:bg-transparent hover:bg-transparent cursor-default">
+                <ThemeToggle />
+              </DropdownMenuItem>
               {session ? (
                 <>
                   <DropdownMenuItem asChild>

@@ -5,6 +5,7 @@ import { Toaster } from "sonner";
 import MainNav from "@/components/layout/main-nav";
 import Footer from "@/components/layout/footer";
 import { SessionProvider } from "@/components/providers/session-provider";
+import { ThemeProvider } from "@/components/providers/theme-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,20 +28,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <SessionProvider>
-          <div className="flex min-h-screen flex-col">
-            <MainNav />
-            <main className="flex-1">
-              {children}
-            </main>
-            <Footer />
-          </div>
-          <Toaster position="top-right" />
-        </SessionProvider>
+        <ThemeProvider defaultTheme="system" storageKey="track-to-measure-theme">
+          <SessionProvider>
+            <div className="flex min-h-screen flex-col">
+              <MainNav />
+              <main className="flex-1">
+                {children}
+              </main>
+              <Footer />
+            </div>
+            <Toaster position="top-right" />
+          </SessionProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

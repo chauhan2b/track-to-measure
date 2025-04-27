@@ -73,37 +73,26 @@ export default function TagScanner() {
     setScanResult(null);
 
     try {
-      // In a real implementation, this would be an API call to your backend
-      // For now, we'll simulate a successful scan with mock data
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Call our API endpoint to scan the website
+      const response = await fetch('/api/scan', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ url }),
+      });
 
-      // Mock data for demonstration
-      const mockResult: ScanResult = {
-        url,
-        scanDate: new Date().toISOString(),
-        cms: "WordPress",
-        tags: [
-          { type: "gtm", name: "Google Tag Manager", status: "found", id: "GTM-ABCD123", warnings: [], icon: "/google-tag-manager.svg" },
-          { type: "ga4", name: "Google Analytics 4", status: "found", id: "G-ABCD1234", warnings: ["Incomplete configuration"], icon: "/google-analytics.svg" },
-          { type: "meta", name: "Meta Pixel", status: "found", id: "123456789012345", warnings: [], icon: "/meta-pixel.svg" },
-          { type: "ads", name: "Google Ads", status: "not_found", id: null, warnings: [], icon: "/google-ads.svg" },
-          { type: "microsoft", name: "Microsoft Advertising", status: "not_found", id: null, warnings: [], icon: "/microsoft.svg" },
-          { type: "linkedin", name: "LinkedIn Insight", status: "not_found", id: null, warnings: [], icon: "/linkedin.svg" },
-          { type: "twitter", name: "Twitter/X Pixel", status: "found", id: "tw-abcd1234", warnings: [], icon: "/twitter.svg" },
-          { type: "tiktok", name: "TikTok Pixel", status: "not_found", id: null, warnings: [], icon: "/tiktok.svg" },
-        ],
-        recommendations: [
-          "Consider implementing Google Ads tag for conversion tracking",
-          "Fix Google Analytics 4 configuration",
-          "Add Microsoft Advertising tag for better campaign tracking"
-        ]
-      };
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to scan website');
+      }
 
-      setScanResult(mockResult);
+      const scanData = await response.json();
+      setScanResult(scanData);
       toast.success("Website scan completed successfully!");
     } catch (error) {
       console.error("Scan failed:", error);
-      toast.error("Failed to scan website. Please try again.");
+      toast.error(error instanceof Error ? error.message : "Failed to scan website. Please try again.");
     } finally {
       setIsScanning(false);
     }

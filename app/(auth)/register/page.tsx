@@ -23,23 +23,39 @@ export default function RegisterPage() {
     setIsLoading(true);
 
     try {
-      // For the MVP, we'll simulate a successful registration
-      // In a real implementation, this would call an API to create the user
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      // Call the registration API endpoint
+      const response = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, email, password }),
+      });
 
-      toast.success("Registration successful! Please log in.");
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.error || 'Registration failed');
+      }
+      
+      toast.success("Registration successful!");
       
       // Automatically log in the user after registration
-      await signIn("credentials", {
+      const signInResult = await signIn("credentials", {
         email,
         password,
         redirect: false,
       });
       
-      router.push("/");
-      router.refresh();
+      if (signInResult?.error) {
+        toast.error("Registration successful but login failed. Please log in manually.");
+        router.push("/login");
+      } else {
+        router.push("/");
+        router.refresh();
+      }
     } catch (error) {
-      setError("An error occurred during registration. Please try again.");
+      setError(error instanceof Error ? error.message : "An error occurred during registration. Please try again.");
       toast.error("Registration failed. Please try again.");
     } finally {
       setIsLoading(false);

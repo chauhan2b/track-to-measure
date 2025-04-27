@@ -1,226 +1,300 @@
 "use client";
 
-import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
-// Mock data for tracking event guides
-const trackingEventCategories = [
+// Event listener categories and their guides
+const trackingCategories = [
   {
-    id: "ecommerce",
-    name: "E-commerce",
+    id: "google-analytics",
+    name: "Google Analytics 4",
     guides: [
-      { id: "add-to-cart", name: "Add to Cart", platform: "GA4" },
-      { id: "purchase", name: "Purchase", platform: "GA4" },
-      { id: "view-item", name: "View Item", platform: "GA4" },
-      { id: "begin-checkout", name: "Begin Checkout", platform: "GA4" },
-      { id: "add-payment-info", name: "Add Payment Info", platform: "GA4" },
+      {
+        id: "ga4-pageview",
+        name: "Page View",
+        description: "Track when a user views a page",
+        code: `// Google Analytics 4 Page View
+gtag('event', 'page_view', {
+  page_title: document.title,
+  page_location: window.location.href,
+  page_path: window.location.pathname
+});`,
+      },
+      {
+        id: "ga4-click-event",
+        name: "Click Event",
+        description: "Track when a user clicks on an element",
+        code: `// Google Analytics 4 Click Event
+document.querySelector('.my-button').addEventListener('click', function() {
+  gtag('event', 'button_click', {
+    element_id: this.id,
+    element_text: this.innerText,
+    element_url: this.href || ''
+  });
+});`,
+      },
+      {
+        id: "ga4-form-submit",
+        name: "Form Submission",
+        description: "Track when a user submits a form",
+        code: `// Google Analytics 4 Form Submission
+document.querySelector('form').addEventListener('submit', function() {
+  gtag('event', 'form_submit', {
+    form_id: this.id,
+    form_name: this.name || 'unnamed_form',
+    form_destination: this.action
+  });
+});`,
+      },
+      {
+        id: "ga4-ecommerce",
+        name: "Ecommerce Purchase",
+        description: "Track when a user completes a purchase",
+        code: `// Google Analytics 4 Purchase Event
+gtag('event', 'purchase', {
+  transaction_id: 'T_12345',
+  value: 59.99,
+  currency: 'USD',
+  tax: 4.90,
+  shipping: 5.99,
+  items: [
+    {
+      item_id: 'SKU_12345',
+      item_name: 'Stan Smith Shoes',
+      item_category: 'Footwear',
+      price: 59.99,
+      quantity: 1
+    }
+  ]
+});`,
+      },
     ],
   },
   {
-    id: "engagement",
-    name: "User Engagement",
+    id: "facebook-pixel",
+    name: "Meta Pixel",
     guides: [
-      { id: "page-view", name: "Page View", platform: "GTM" },
-      { id: "scroll-tracking", name: "Scroll Tracking", platform: "GTM" },
-      { id: "video-play", name: "Video Play", platform: "GTM" },
-      { id: "outbound-click", name: "Outbound Link Click", platform: "GTM" },
-      { id: "file-download", name: "File Download", platform: "GTM" },
+      {
+        id: "meta-pageview",
+        name: "Page View",
+        description: "Track when a user views a page",
+        code: `// Meta Pixel Page View
+fbq('track', 'PageView');`,
+      },
+      {
+        id: "meta-lead",
+        name: "Lead",
+        description: "Track when a user becomes a lead",
+        code: `// Meta Pixel Lead Event
+fbq('track', 'Lead', {
+  content_name: 'Newsletter Signup',
+  content_category: 'Signup Form'
+});`,
+      },
+      {
+        id: "meta-registration",
+        name: "Registration",
+        description: "Track when a user completes registration",
+        code: `// Meta Pixel Registration Event
+fbq('track', 'CompleteRegistration', {
+  content_name: 'User Registration',
+  status: 'success'
+});`,
+      },
+      {
+        id: "meta-purchase",
+        name: "Purchase",
+        description: "Track when a user completes a purchase",
+        code: `// Meta Pixel Purchase Event
+fbq('track', 'Purchase', {
+  value: 59.99,
+  currency: 'USD',
+  content_ids: ['SKU_12345'],
+  content_type: 'product',
+  content_name: 'Stan Smith Shoes',
+  content_category: 'Footwear'
+});`,
+      },
     ],
   },
   {
-    id: "forms",
-    name: "Form Interactions",
+    id: "google-tag-manager",
+    name: "Google Tag Manager",
     guides: [
-      { id: "form-submit", name: "Form Submit", platform: "Meta Pixel" },
-      { id: "form-start", name: "Form Start", platform: "Meta Pixel" },
-      { id: "form-field-complete", name: "Form Field Complete", platform: "Meta Pixel" },
-      { id: "form-error", name: "Form Error", platform: "Meta Pixel" },
+      {
+        id: "gtm-dataLayer-push",
+        name: "DataLayer Push",
+        description: "Basic DataLayer push implementation",
+        code: `// Google Tag Manager DataLayer Push
+dataLayer.push({
+  'event': 'custom_event',
+  'event_category': 'User Interaction',
+  'event_action': 'Button Click',
+  'event_label': 'Sign Up Button'
+});`,
+      },
+      {
+        id: "gtm-click-listener",
+        name: "Click Listener",
+        description: "Track clicks using GTM",
+        code: `// Google Tag Manager Click Listener
+// Add this code to your page
+document.querySelectorAll('.tracked-button').forEach(function(button) {
+  button.addEventListener('click', function() {
+    dataLayer.push({
+      'event': 'button_click',
+      'button_id': this.id,
+      'button_text': this.innerText,
+      'button_class': this.className
+    });
+  });
+});`,
+      },
+      {
+        id: "gtm-form-submit",
+        name: "Form Submission",
+        description: "Track form submissions using GTM",
+        code: `// Google Tag Manager Form Submission
+// Add this code to your page
+document.querySelectorAll('form').forEach(function(form) {
+  form.addEventListener('submit', function() {
+    dataLayer.push({
+      'event': 'form_submit',
+      'form_id': this.id,
+      'form_name': this.getAttribute('name') || 'unnamed_form',
+      'form_destination': this.action
+    });
+  });
+});`,
+      },
     ],
   },
   {
-    id: "social",
-    name: "Social Media",
+    id: "linkedin",
+    name: "LinkedIn Insight",
     guides: [
-      { id: "social-share", name: "Social Share", platform: "Multiple" },
-      { id: "tweet-intent", name: "Tweet Intent", platform: "Twitter Pixel" },
-      { id: "linkedin-share", name: "LinkedIn Share", platform: "LinkedIn Insight" },
-      { id: "facebook-share", name: "Facebook Share", platform: "Meta Pixel" },
+      {
+        id: "linkedin-pageview",
+        name: "Page View",
+        description: "Track when a user views a page",
+        code: `// LinkedIn Insight Tag Page View
+window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || [];
+window._linkedin_data_partner_ids.push(_linkedin_partner_id);
+
+// The tracking snippet is loaded automatically by the LinkedIn script tag`,
+      },
+      {
+        id: "linkedin-conversion",
+        name: "Conversion Tracking",
+        description: "Track a LinkedIn conversion",
+        code: `// LinkedIn Conversion Tracking
+window.lintrk('track', { conversion_id: 12345 });`,
+      },
+    ],
+  },
+  {
+    id: "twitter",
+    name: "Twitter/X Pixel",
+    guides: [
+      {
+        id: "twitter-pageview",
+        name: "Page View",
+        description: "Track when a user views a page",
+        code: `// Twitter/X Pixel Page View
+twq('track', 'PageView');`,
+      },
+      {
+        id: "twitter-purchase",
+        name: "Purchase",
+        description: "Track when a user completes a purchase",
+        code: `// Twitter/X Pixel Purchase Event
+twq('track', 'Purchase', {
+  value: '59.99',
+  currency: 'USD',
+  content_ids: ['SKU_12345'],
+  content_name: 'Stan Smith Shoes',
+  content_type: 'product'
+});`,
+      },
     ],
   },
 ];
 
-interface Guide {
-  id: string;
-  name: string;
-  platform: string;
+// Function to copy text to clipboard
+function CopyButton({ text }: { text: string }) {
+  return (
+    <Button
+      variant="outline"
+      size="sm"
+      className="absolute top-3 right-3 h-8 w-8 p-0"
+      onClick={() => {
+        navigator.clipboard.writeText(text);
+        toast.success("Code copied to clipboard!");
+      }}
+    >
+      <svg
+        className="h-4 w-4"
+        fill="none"
+        height="24"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+        viewBox="0 0 24 24"
+        width="24"
+      >
+        <rect height="14" rx="2" ry="2" width="14" x="8" y="8"></rect>
+        <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path>
+      </svg>
+      <span className="sr-only">Copy Code</span>
+    </Button>
+  );
 }
 
 export default function TrackingLibraryPage() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("ecommerce");
-  const [selectedGuide, setSelectedGuide] = useState<Guide | null>(null);
-
-  const filteredGuides = searchTerm
-    ? trackingEventCategories.flatMap((category) =>
-        category.guides.filter(
-          (guide) =>
-            guide.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            guide.platform.toLowerCase().includes(searchTerm.toLowerCase())
-        )
-      )
-    : trackingEventCategories.find((cat) => cat.id === selectedCategory)?.guides || [];
-
-  const handleCopyCode = () => {
-    // In a real implementation, this would copy actual code snippets
-    navigator.clipboard.writeText(`// Sample ${selectedGuide?.name} tracking code for ${selectedGuide?.platform}
-function track${selectedGuide?.name.replace(/\s+/g, "")}(data) {
-  console.log("Tracking ${selectedGuide?.name}", data);
-  // Add your tracking code here
-}`);
-    toast.success("Code copied to clipboard!");
-  };
-
   return (
     <div className="container py-10">
-      <div className="flex flex-col space-y-4">
-        <h1 className="text-3xl font-bold">Tracking Event Library</h1>
-        <p className="text-lg text-muted-foreground">
-          Browse our comprehensive library of tracking event listener guides for different marketing platforms.
-        </p>
-        
-        <div className="w-full max-w-md">
-          <Input
-            type="search"
-            placeholder="Search guides..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full"
-          />
+      <div className="mx-auto max-w-5xl space-y-8">
+        <div className="space-y-2 text-center">
+          <h1 className="text-3xl font-bold">Tracking Event Listener Library</h1>
+          <p className="text-muted-foreground">
+            Browse our library of tracking event listener implementations for various marketing platforms
+          </p>
         </div>
 
-        {!searchTerm && (
-          <Tabs defaultValue="ecommerce" value={selectedCategory} onValueChange={setSelectedCategory}>
-            <TabsList className="grid grid-cols-2 md:grid-cols-4">
-              {trackingEventCategories.map((category) => (
-                <TabsTrigger key={category.id} value={category.id}>
-                  {category.name}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-          </Tabs>
-        )}
-
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mt-6">
-          {filteredGuides.map((guide) => (
-            <Card key={guide.id} className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => setSelectedGuide(guide)}>
-              <CardHeader>
-                <CardTitle>{guide.name}</CardTitle>
-                <CardDescription>Platform: {guide.platform}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  Implementation guide for tracking {guide.name.toLowerCase()} events on websites.
-                </p>
-              </CardContent>
-              <CardFooter>
-                <Button variant="outline" onClick={(e) => {
-                  e.stopPropagation();
-                  setSelectedGuide(guide);
-                }}>
-                  View Guide
-                </Button>
-              </CardFooter>
-            </Card>
+        <Tabs defaultValue="google-analytics" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-2 md:grid-cols-5 gap-2">
+            {trackingCategories.map((category) => (
+              <TabsTrigger key={category.id} value={category.id}>
+                {category.name}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+          {trackingCategories.map((category) => (
+            <TabsContent key={category.id} value={category.id} className="space-y-6">
+              <div className="grid gap-6 md:grid-cols-2">
+                {category.guides.map((guide) => (
+                  <Card key={guide.id} className="overflow-hidden">
+                    <CardHeader>
+                      <CardTitle>{guide.name}</CardTitle>
+                      <CardDescription>{guide.description}</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="relative">
+                        <pre className="p-4 rounded-md bg-muted overflow-x-auto">
+                          <code className="text-sm">{guide.code}</code>
+                        </pre>
+                        <CopyButton text={guide.code} />
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </TabsContent>
           ))}
-        </div>
-
-        {selectedGuide && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-            <Card className="w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-              <CardHeader>
-                <CardTitle>{selectedGuide.name}</CardTitle>
-                <CardDescription>Implementation Guide for {selectedGuide.platform}</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <h3 className="font-medium">Description</h3>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    This guide explains how to implement {selectedGuide.name.toLowerCase()} event tracking for {selectedGuide.platform}.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className="font-medium">When to Trigger</h3>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    Trigger this event when a user {selectedGuide.name.toLowerCase().includes("form") 
-                      ? "interacts with a form" 
-                      : selectedGuide.name.toLowerCase().includes("purchase") 
-                        ? "completes a purchase" 
-                        : "performs the specific action"}.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className="font-medium">Code Implementation</h3>
-                  <div className="mt-1 relative">
-                    <pre className="bg-muted p-4 rounded-md overflow-x-auto text-xs">
-                      <code>
-                        {`// ${selectedGuide.name} Event for ${selectedGuide.platform}
-function track${selectedGuide.name.replace(/\s+/g, "")}(data) {
-  ${selectedGuide.platform === "GA4" 
-    ? `gtag("event", "${selectedGuide.id}", {
-    currency: "USD",
-    value: data.value,
-    items: data.items
-  });` 
-    : selectedGuide.platform === "Meta Pixel" 
-      ? `fbq('track', '${selectedGuide.id}', {
-    value: data.value,
-    currency: 'USD',
-  });`
-      : `// Custom implementation for ${selectedGuide.platform}
-console.log("Tracking ${selectedGuide.id}", data);`}
-}`}
-                      </code>
-                    </pre>
-                    <Button 
-                      variant="secondary" 
-                      size="sm" 
-                      className="absolute top-2 right-2"
-                      onClick={handleCopyCode}
-                    >
-                      Copy
-                    </Button>
-                  </div>
-                </div>
-
-                <div>
-                  <h3 className="font-medium">Parameters</h3>
-                  <ul className="list-disc pl-5 mt-1 space-y-1 text-sm text-muted-foreground">
-                    <li><span className="font-mono text-primary">data.value</span> - The monetary value associated with the event (if applicable)</li>
-                    <li><span className="font-mono text-primary">data.items</span> - Array of items (for e-commerce events)</li>
-                    <li><span className="font-mono text-primary">data.currency</span> - Transaction currency (default: USD)</li>
-                  </ul>
-                </div>
-              </CardContent>
-              <CardFooter className="flex justify-between">
-                <Button variant="outline" onClick={() => setSelectedGuide(null)}>Close</Button>
-                <Button onClick={handleCopyCode}>Copy Code</Button>
-              </CardFooter>
-            </Card>
-          </div>
-        )}
-
-        {filteredGuides.length === 0 && (
-          <div className="text-center py-10">
-            <h3 className="text-lg font-medium">No guides found</h3>
-            <p className="text-muted-foreground">Try adjusting your search term</p>
-          </div>
-        )}
+        </Tabs>
       </div>
     </div>
   );

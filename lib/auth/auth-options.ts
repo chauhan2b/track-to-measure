@@ -1,16 +1,6 @@
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-
-// This is a simplified auth setup for the MVP
-// In a production environment, you'd want to connect to a real database
-const users = [
-  {
-    id: "1",
-    email: "demo@tracktomeasure.com",
-    name: "Demo User",
-    password: "password123", // In production, you'd never store plain text passwords
-  },
-];
+import { users } from "@/lib/auth/users";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -25,8 +15,7 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
-        // For the MVP, we're using a hardcoded user list
-        // In production, you'd query your database here
+        // Find the user in our in-memory users array
         const user = users.find((user) => user.email === credentials.email);
 
         if (!user || user.password !== credentials.password) {
@@ -52,12 +41,14 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
+        token.name = user.name;
       }
       return token;
     },
     async session({ session, token }) {
       if (token && session.user) {
         session.user.id = token.id as string;
+        session.user.name = token.name as string;
       }
       return session;
     },

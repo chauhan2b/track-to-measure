@@ -22,6 +22,7 @@ export default function MainNav() {
   
   const routes = [
     { name: "Home", path: "/" },
+    { name: "Scanner", path: "/scanner" },
     { name: "Tracking Library", path: "/tracking-library" },
     { name: "About", path: "/about" },
     { name: "Contact", path: "/contact" },

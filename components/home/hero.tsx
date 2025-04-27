@@ -16,7 +16,7 @@ export default function Hero() {
         </div>
         <div className="flex flex-col gap-2 sm:flex-row">
           <Button asChild size="lg" className="px-8">
-            <a href="#tag-scanner">Scan Website</a>
+            <Link href="/scanner">Scan Website</Link>
           </Button>
           <Button asChild variant="outline" size="lg" className="px-8">
             <Link href="/tracking-library">Browse Tracking Library</Link>

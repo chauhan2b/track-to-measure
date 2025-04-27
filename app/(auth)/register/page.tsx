@@ -119,7 +119,7 @@ export default function RegisterPage() {
               </div>
               {error && <p className="text-sm text-red-500">{error}</p>}
             </CardContent>
-            <CardFooter className="flex flex-col">
+            <CardFooter className="flex flex-col pt-4">
               <Button type="submit" className="w-full" disabled={isLoading}>
                 {isLoading ? "Creating account..." : "Register"}
               </Button>

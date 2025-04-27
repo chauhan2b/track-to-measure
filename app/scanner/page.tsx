@@ -344,12 +344,7 @@ export default function ScannerPage() {
                   </ScanReportDownloadLink>
                 ) : (
                   <Button 
-                    onClick={() => toast.info("To download reports, please create an account or log in.", {
-                      action: {
-                        label: "Sign Up",
-                        onClick: () => window.location.href = "/register"
-                      }
-                    })} 
+                    onClick={() => toast.info("To download reports, please create an account or log in.")} 
                     className="w-full sm:flex-1"
                   >
                     Generate PDF Report

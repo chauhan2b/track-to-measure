@@ -270,12 +270,7 @@ export default function TagScanner() {
                   )}
                 </ScanReportDownloadLink>
               ) : (
-                <Button onClick={() => toast.info("To download reports, please create an account or log in.", {
-                  action: {
-                    label: "Sign Up",
-                    onClick: () => window.location.href = "/register"
-                  }
-                })} className="w-full">
+                <Button onClick={() => toast.info("To download reports, please create an account or log in.")} className="w-full">
                   Generate PDF Report
                 </Button>
               )}

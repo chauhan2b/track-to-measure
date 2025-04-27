@@ -41,7 +41,7 @@ export default function RootLayout({
               </main>
               <Footer />
             </div>
-            <Toaster position="top-right" />
+            <Toaster position="bottom-right" theme="system" richColors />
           </SessionProvider>
         </ThemeProvider>
       </body>

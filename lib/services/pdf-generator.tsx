@@ -7,6 +7,7 @@ import {
   StyleSheet, 
   PDFDownloadLink 
 } from '@react-pdf/renderer';
+import { toast } from 'sonner';
 
 // Define types for the scan results
 export interface TagResult {
@@ -196,6 +197,7 @@ export const ScanReportDownloadLink = ({
   <PDFDownloadLink 
     document={<ScanReportDocument scanResult={scanResult} />} 
     fileName={fileName}
+    onClick={() => toast.success('Your report is being downloaded!')}
   >
     {children}
   </PDFDownloadLink>

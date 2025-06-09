@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "TrackToMeasure - Tag Auditing & Reporting Tool",
+  title: "TagSentry - Tag Auditing & Reporting Tool",
   description: "Scan websites for marketing tracking tags and generate reports",
 };
 
@@ -32,13 +32,14 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ThemeProvider defaultTheme="system" storageKey="track-to-measure-theme">
+        <ThemeProvider
+          defaultTheme="system"
+          storageKey="track-to-measure-theme"
+        >
           <SessionProvider>
             <div className="flex min-h-screen flex-col">
               <MainNav />
-              <main className="flex-1">
-                {children}
-              </main>
+              <main className="flex-1">{children}</main>
               <Footer />
             </div>
             <Toaster position="bottom-right" theme="system" richColors />

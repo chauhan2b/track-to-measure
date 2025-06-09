@@ -1,19 +1,19 @@
-import React from 'react';
-import { 
-  Document, 
-  Page, 
-  Text, 
-  View, 
-  StyleSheet, 
-  PDFDownloadLink 
-} from '@react-pdf/renderer';
-import { toast } from 'sonner';
+import React from "react";
+import {
+  Document,
+  Page,
+  Text,
+  View,
+  StyleSheet,
+  PDFDownloadLink,
+} from "@react-pdf/renderer";
+import { toast } from "sonner";
 
 // Define types for the scan results
 export interface TagResult {
   type: string;
   name: string;
-  status: 'found' | 'not_found' | 'warning';
+  status: "found" | "not_found" | "warning";
   id: string | null;
   warnings: string[];
   icon: string;
@@ -30,136 +30,144 @@ export interface ScanResult {
 // Create styles for the PDF document
 const styles = StyleSheet.create({
   page: {
-    flexDirection: 'column',
-    backgroundColor: '#FFFFFF',
-    padding: 30
+    flexDirection: "column",
+    backgroundColor: "#FFFFFF",
+    padding: 30,
   },
   section: {
     margin: 10,
-    padding: 10
+    padding: 10,
   },
   header: {
     marginBottom: 20,
     borderBottomWidth: 1,
-    borderBottomColor: '#E5E7EB',
-    paddingBottom: 10
+    borderBottomColor: "#E5E7EB",
+    paddingBottom: 10,
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
-    color: '#111827'
+    fontWeight: "bold",
+    color: "#111827",
   },
   subtitle: {
     fontSize: 16,
     marginTop: 5,
-    color: '#6B7280'
+    color: "#6B7280",
   },
   scanInfo: {
     marginTop: 10,
     fontSize: 12,
-    color: '#4B5563'
+    color: "#4B5563",
   },
   sectionTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 10,
-    color: '#111827'
+    color: "#111827",
   },
   tagItem: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginBottom: 5,
-    padding: 5
+    padding: 5,
   },
   tagName: {
     flex: 1,
-    fontSize: 12
+    fontSize: 12,
   },
   tagStatus: {
     fontSize: 12,
-    fontWeight: 'bold'
+    fontWeight: "bold",
   },
   tagId: {
     fontSize: 10,
-    color: '#4B5563',
-    marginTop: 2
+    color: "#4B5563",
+    marginTop: 2,
   },
   statusFound: {
-    color: '#10B981'
+    color: "#10B981",
   },
   statusNotFound: {
-    color: '#6B7280'
+    color: "#6B7280",
   },
   statusWarning: {
-    color: '#F59E0B'
+    color: "#F59E0B",
   },
   warningText: {
     fontSize: 10,
-    color: '#F59E0B',
-    marginTop: 2
+    color: "#F59E0B",
+    marginTop: 2,
   },
   recommendationTitle: {
     fontSize: 14,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginTop: 20,
     marginBottom: 5,
-    color: '#111827'
+    color: "#111827",
   },
   recommendation: {
     fontSize: 12,
     marginBottom: 3,
-    color: '#4B5563'
+    color: "#4B5563",
   },
   footer: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 30,
     left: 30,
     right: 30,
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 10,
-    color: '#9CA3AF',
+    color: "#9CA3AF",
     borderTopWidth: 1,
-    borderTopColor: '#E5E7EB',
-    paddingTop: 10
-  }
+    borderTopColor: "#E5E7EB",
+    paddingTop: 10,
+  },
 });
 
 // PDF Document component
-export const ScanReportDocument = ({ scanResult }: { scanResult: ScanResult }) => (
+export const ScanReportDocument = ({
+  scanResult,
+}: {
+  scanResult: ScanResult;
+}) => (
   <Document>
     <Page size="A4" style={styles.page}>
       <View style={styles.header}>
-        <Text style={styles.title}>TrackToMeasure Scan Report</Text>
+        <Text style={styles.title}>TagSentry Scan Report</Text>
         <Text style={styles.subtitle}>Marketing Tag Audit Results</Text>
         <Text style={styles.scanInfo}>
-          URL: {scanResult.url}{'\n'}
-          Scan Date: {new Date(scanResult.scanDate).toLocaleString()}{'\n'}
-          CMS Platform: {scanResult.cms || 'Unknown'}
+          URL: {scanResult.url}
+          {"\n"}
+          Scan Date: {new Date(scanResult.scanDate).toLocaleString()}
+          {"\n"}
+          CMS Platform: {scanResult.cms || "Unknown"}
         </Text>
       </View>
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Tag Status</Text>
-        
+
         {scanResult.tags.map((tag, index) => (
           <View key={index} style={styles.tagItem}>
             <Text style={styles.tagName}>{tag.name}</Text>
-            <Text style={[
-              styles.tagStatus,
-              tag.status === 'found' ? styles.statusFound : 
-              tag.status === 'not_found' ? styles.statusNotFound : 
-              styles.statusWarning
-            ]}>
-              {tag.status === 'found' ? 'Found' : 'Not Found'}
+            <Text
+              style={[
+                styles.tagStatus,
+                tag.status === "found"
+                  ? styles.statusFound
+                  : tag.status === "not_found"
+                  ? styles.statusNotFound
+                  : styles.statusWarning,
+              ]}
+            >
+              {tag.status === "found" ? "Found" : "Not Found"}
             </Text>
-            
-            {tag.id && tag.status === 'found' && (
+
+            {tag.id && tag.status === "found" && (
               <Text style={styles.tagId}>ID: {tag.id}</Text>
             )}
-            
+
             {tag.warnings.length > 0 && (
-              <Text style={styles.warningText}>
-                Warning: {tag.warnings[0]}
-              </Text>
+              <Text style={styles.warningText}>Warning: {tag.warnings[0]}</Text>
             )}
           </View>
         ))}
@@ -177,27 +185,27 @@ export const ScanReportDocument = ({ scanResult }: { scanResult: ScanResult }) =
       )}
 
       <Text style={styles.footer}>
-        Generated by TrackToMeasure on {new Date().toLocaleString()}{'\n'}
-        © {new Date().getFullYear()} TrackToMeasure. All rights reserved.
+        Generated by TagSentry on {new Date().toLocaleString()}
+        {"\n"}© {new Date().getFullYear()} TagSentry. All rights reserved.
       </Text>
     </Page>
   </Document>
 );
 
 // PDF Download Link wrapper for easier integration
-export const ScanReportDownloadLink = ({ 
-  scanResult, 
-  fileName = 'tracking-report.pdf',
-  children
-}: { 
-  scanResult: ScanResult, 
-  fileName?: string,
-  children: React.ReactNode
+export const ScanReportDownloadLink = ({
+  scanResult,
+  fileName = "tracking-report.pdf",
+  children,
+}: {
+  scanResult: ScanResult;
+  fileName?: string;
+  children: React.ReactNode;
 }) => (
-  <PDFDownloadLink 
-    document={<ScanReportDocument scanResult={scanResult} />} 
+  <PDFDownloadLink
+    document={<ScanReportDocument scanResult={scanResult} />}
     fileName={fileName}
-    onClick={() => toast.success('Your report is being downloaded!')}
+    onClick={() => toast.success("Your report is being downloaded!")}
   >
     {children}
   </PDFDownloadLink>

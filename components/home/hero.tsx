@@ -10,8 +10,9 @@ export default function Hero() {
             Verify Your Marketing Tags in Seconds
           </h1>
           <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
-            TrackToMeasure helps marketers and freelancers audit and verify marketing tracking tags across websites.
-            Generate comprehensive reports and access implementation guides.
+            TagSentry helps marketers and freelancers audit and verify marketing
+            tracking tags across websites. Generate comprehensive reports and
+            access implementation guides.
           </p>
         </div>
         <div className="flex flex-col gap-2 sm:flex-row">
@@ -43,7 +44,9 @@ export default function Hero() {
               </svg>
             </div>
             <h3 className="mt-2 font-semibold">Fast Scanning</h3>
-            <p className="text-sm text-muted-foreground">Detect tags in seconds</p>
+            <p className="text-sm text-muted-foreground">
+              Detect tags in seconds
+            </p>
           </div>
           <div className="flex flex-col items-center">
             <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted">
@@ -65,7 +68,9 @@ export default function Hero() {
               </svg>
             </div>
             <h3 className="mt-2 font-semibold">PDF Reports</h3>
-            <p className="text-sm text-muted-foreground">Download & share easily</p>
+            <p className="text-sm text-muted-foreground">
+              Download & share easily
+            </p>
           </div>
           <div className="flex flex-col items-center">
             <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted">
@@ -86,7 +91,9 @@ export default function Hero() {
               </svg>
             </div>
             <h3 className="mt-2 font-semibold">Event Listeners</h3>
-            <p className="text-sm text-muted-foreground">Implementation guides</p>
+            <p className="text-sm text-muted-foreground">
+              Implementation guides
+            </p>
           </div>
           <div className="flex flex-col items-center">
             <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted">
@@ -108,7 +115,9 @@ export default function Hero() {
               </svg>
             </div>
             <h3 className="mt-2 font-semibold">Multiple Tags</h3>
-            <p className="text-sm text-muted-foreground">GA4, Meta, GTM & more</p>
+            <p className="text-sm text-muted-foreground">
+              GA4, Meta, GTM & more
+            </p>
           </div>
         </div>
       </div>

@@ -190,7 +190,7 @@ export async function POST(req: Request) {
     try {
       const response = await fetch(url, {
         headers: {
-          'User-Agent': 'TrackToMeasure-TagScanner/1.0'
+          'User-Agent': 'TagSentry-TagScanner/1.0'
         }
       });
       

@@ -6,23 +6,35 @@ export default function Footer() {
       <div className="container flex flex-col items-center justify-between gap-4 md:flex-row">
         <div className="flex flex-col items-center gap-4 md:flex-row md:gap-6">
           <Link href="/" className="flex items-center">
-            <span className="font-bold">TrackToMeasure</span>
+            <span className="font-bold">TagSentry</span>
           </Link>
           <p className="text-center text-sm text-muted-foreground md:text-left">
-            &copy; {new Date().getFullYear()} TrackToMeasure. All rights reserved.
+            &copy; {new Date().getFullYear()} TagSentry. All rights reserved.
           </p>
         </div>
         <div className="flex gap-4">
-          <Link href="/about" className="text-sm text-muted-foreground hover:text-foreground">
+          <Link
+            href="/about"
+            className="text-sm text-muted-foreground hover:text-foreground"
+          >
             About
           </Link>
-          <Link href="/contact" className="text-sm text-muted-foreground hover:text-foreground">
+          <Link
+            href="/contact"
+            className="text-sm text-muted-foreground hover:text-foreground"
+          >
             Contact
           </Link>
-          <Link href="/terms" className="text-sm text-muted-foreground hover:text-foreground">
+          <Link
+            href="/terms"
+            className="text-sm text-muted-foreground hover:text-foreground"
+          >
             Terms
           </Link>
-          <Link href="/privacy" className="text-sm text-muted-foreground hover:text-foreground">
+          <Link
+            href="/privacy"
+            className="text-sm text-muted-foreground hover:text-foreground"
+          >
             Privacy
           </Link>
         </div>

@@ -10,16 +10,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useSession, signOut } from "next-auth/react";
-import {
-  Avatar,
-  AvatarFallback,
-} from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 export default function MainNav() {
   const pathname = usePathname();
   const { data: session } = useSession();
-  
+
   const routes = [
     { name: "Home", path: "/" },
     { name: "Scanner", path: "/scanner" },
@@ -41,7 +38,7 @@ export default function MainNav() {
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-6">
           <Link href="/" className="flex items-center">
-            <span className="text-xl font-bold">TrackToMeasure</span>
+            <span className="text-xl font-bold">TagSentry</span>
           </Link>
           <nav className="hidden md:flex items-center gap-6">
             {routes.map((route) => (
@@ -61,7 +58,7 @@ export default function MainNav() {
         </div>
         <div className="flex items-center gap-4">
           <ThemeToggle />
-          
+
           {session ? (
             <div className="hidden md:flex items-center gap-4">
               <span className="text-sm text-muted-foreground">
@@ -71,7 +68,9 @@ export default function MainNav() {
                 <DropdownMenuTrigger asChild>
                   <Avatar className="cursor-pointer">
                     <AvatarFallback>
-                      {session.user?.name ? getInitials(session.user.name) : "U"}
+                      {session.user?.name
+                        ? getInitials(session.user.name)
+                        : "U"}
                     </AvatarFallback>
                   </Avatar>
                 </DropdownMenuTrigger>
@@ -82,7 +81,9 @@ export default function MainNav() {
                   <DropdownMenuItem asChild>
                     <Link href="/dashboard">Dashboard</Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => signOut({ callbackUrl: "/" })}>
+                  <DropdownMenuItem
+                    onClick={() => signOut({ callbackUrl: "/" })}
+                  >
                     Sign Out
                   </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -134,7 +135,9 @@ export default function MainNav() {
                   <DropdownMenuItem asChild>
                     <Link href="/dashboard">Dashboard</Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => signOut({ callbackUrl: "/" })}>
+                  <DropdownMenuItem
+                    onClick={() => signOut({ callbackUrl: "/" })}
+                  >
                     Sign Out
                   </DropdownMenuItem>
                 </>

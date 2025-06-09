@@ -37,7 +37,7 @@ export default function ContactPage() {
       <div className="flex flex-col space-y-4 max-w-2xl mx-auto">
         <h1 className="text-3xl font-bold">Contact Us</h1>
         <p className="text-lg text-muted-foreground mb-6">
-          Have questions about TrackToMeasure? We'd love to hear from you.
+          Have questions about TagSentry? We'd love to hear from you.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -45,7 +45,8 @@ export default function ContactPage() {
             <div>
               <h3 className="text-xl font-medium">Get in Touch</h3>
               <p className="text-muted-foreground mt-1">
-                Fill out the form and our team will get back to you within 24 hours.
+                Fill out the form and our team will get back to you within 24
+                hours.
               </p>
             </div>
             <div className="space-y-3">
@@ -65,7 +66,7 @@ export default function ContactPage() {
                   <rect width="20" height="16" x="2" y="4" rx="2" />
                   <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
                 </svg>
-                <span>support@tracktomeasure.com</span>
+                <span>support@tagsentry.com</span>
               </div>
               <div className="flex items-center gap-2">
                 <svg

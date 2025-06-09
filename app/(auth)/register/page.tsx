@@ -5,7 +5,14 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 
@@ -24,38 +31,44 @@ export default function RegisterPage() {
 
     try {
       // Call the registration API endpoint
-      const response = await fetch('/api/auth/register', {
-        method: 'POST',
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ name, email, password }),
       });
 
       const data = await response.json();
-      
+
       if (!response.ok) {
-        throw new Error(data.error || 'Registration failed');
+        throw new Error(data.error || "Registration failed");
       }
-      
+
       toast.success("Registration successful!");
-      
+
       // Automatically log in the user after registration
       const signInResult = await signIn("credentials", {
         email,
         password,
         redirect: false,
       });
-      
+
       if (signInResult?.error) {
-        toast.error("Registration successful but login failed. Please log in manually.");
+        toast.error(
+          "Registration successful but login failed. Please log in manually."
+        );
         router.push("/login");
       } else {
         router.push("/");
         router.refresh();
       }
     } catch (error) {
-      setError(error instanceof Error ? error.message : "An error occurred during registration. Please try again.");
+      setError(
+        error instanceof Error
+          ? error.message
+          : "An error occurred during registration. Please try again."
+      );
       toast.error("Registration failed. Please try again.");
     } finally {
       setIsLoading(false);
@@ -66,7 +79,9 @@ export default function RegisterPage() {
     <div className="container py-10 flex flex-col items-center justify-center min-h-[calc(100vh-8rem)]">
       <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
         <div className="flex flex-col space-y-2 text-center">
-          <h1 className="text-2xl font-semibold tracking-tight">Create an account</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">
+            Create an account
+          </h1>
           <p className="text-sm text-muted-foreground">
             Enter your information to create a free account
           </p>
@@ -76,11 +91,14 @@ export default function RegisterPage() {
           <form onSubmit={handleSubmit}>
             <CardHeader>
               <CardTitle>Register</CardTitle>
-              <CardDescription>Create your TrackToMeasure account</CardDescription>
+              <CardDescription>Create your TagSentry account</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <label htmlFor="name" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                <label
+                  htmlFor="name"
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
                   Name
                 </label>
                 <Input
@@ -93,7 +111,10 @@ export default function RegisterPage() {
                 />
               </div>
               <div className="space-y-2">
-                <label htmlFor="email" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                <label
+                  htmlFor="email"
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
                   Email
                 </label>
                 <Input
@@ -106,7 +127,10 @@ export default function RegisterPage() {
                 />
               </div>
               <div className="space-y-2">
-                <label htmlFor="password" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                <label
+                  htmlFor="password"
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
                   Password
                 </label>
                 <Input

@@ -12,7 +12,7 @@ export const users: User[] = [
   {
     id: "1",
     name: "Demo User",
-    email: "demo@tracktomeasure.com",
+    email: "demo@tagsentry.com",
     password: "password123", // In production, this would be hashed
   },
 ];
